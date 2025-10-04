@@ -85,7 +85,7 @@ contract KipuBank {
     /*////////////////////////
             Constructor
     ////////////////////////*/
-   /**
+    /**
     * @notice Inicializa el contrato KipuBank con los parámetros de configuración
      * @param _bankCap Limite maximo total de depositos permitidos en el banco
      * @param _umbralRetiro Monto maximo que se puede retirar por transaccion
@@ -99,18 +99,121 @@ contract KipuBank {
     /*////////////////////////
             Modificadores
     ////////////////////////*/
-    
+    /**
+        * @notice Modificador que valida que el monto sea mayor a cero
+        * @dev Revierte si el valor enviado es cero
+    */
+    modifier montoMayorACero() {
+        if (msg.value == 0) revert KipuBank_MontoDebeSerMayorACero();
+        _;
+    }
+
+    /**
+        * @notice Modificador que valida que el depósito no exceda el límite global del banco
+        * @dev Revierte si el depósito haría que se supere el bankCap
+    */
+    modifier validarLimiteGlobal() {
+        if (s_totalDepositado + msg.value > i_bankCap) {
+            revert KipuBank_LimiteGlobalExcedido(
+                s_totalDepositado,
+                msg.value,
+                i_bankCap
+            );
+        }
+        _;
+    }
     
     /*////////////////////////
             Funciones
     ////////////////////////*/
     
-    // Función external payable (depositar)
+    /**
+        * @notice Funcion para depositar eth en la boveda personal
+        * @dev Antes de procesar el deposito valido el monto y el limite global
+        * @dev incremento el balance del usuario, el total depositado y el contador de depositos
+        * @dev Emite el evento KipuBank_DepositoRealizado si hay deposito exitoso
+    */
+    function depositar() external payable montoMayorACero validarLimiteGlobal {
+        // actualizo el balance del usuario
+        s_boveda[msg.sender] += msg.value;
+        // actualizo el total depositado
+        s_totalDepositado += msg.value;
+        // actualizo el contador de depositos
+        s_contadorDepositos++;
+        
+        // emito evento ok deposito
+        emit KipuBank_DepositoRealizado(msg.sender, msg.value);
+    }
     
-    // Función external (retirar)
+
+    /**
+        * @notice Permite a los usuarios retirar ETH de su bóveda personal
+        * @param _monto Cantidad de ETH que el usuario desea retirar
+        * @dev Valida que el monto sea mayor a cero, que el usuario tenga saldo suficiente
+        * @dev y que no exceda el umbral de retiro por transacción
+        * @dev Sigue el patrón checks-effects-interactions para prevenir reentrancy
+        * @dev Emite el evento KipuBank_RetiroRealizado tras un retiro exitoso
+    */
+    function retirar(uint256 _monto) external {
+        // Checks
+        if (_monto == 0) revert KipuBank_MontoDebeSerMayorACero();
+        
+        if (s_boveda[msg.sender] < _monto) {
+            revert KipuBank_SaldoInsuficiente(s_boveda[msg.sender], _monto);
+        }
+        
+        if (_monto > i_umbralRetiro) {
+            revert KipuBank_RetiroExcedeUmbral(_monto, i_umbralRetiro);
+        }
+        
+        // Effects: actualizo el balance del usuario, el total depositado y el contador de retiros
+        s_boveda[msg.sender] -= _monto;
+        s_totalDepositado -= _monto;
+        s_contadorRetiros++;
+        
+        // Interactions: Transferir ETH y emitir evento
+        emit KipuBank_RetiroRealizado(msg.sender, _monto);
+        _transferirEth(msg.sender, _monto);
+    }
     
-    // Función external view (consultar)
+    /**
+        * @notice Funcion privada para transferir ETH de forma segura
+        * @param _destinatario Direccion que recibira el ETH
+        * @param _monto Cantidad de ETH a transferir
+    */
+    function _transferirEth(address _destinatario, uint256 _monto) private {
+        (bool ok, ) = _destinatario.call{value: _monto}("");
+        if (!ok) revert KipuBank_TransferenciaFallida(_destinatario);
+    }
     
-    // Función private (lógica interna)
-    
+    /**
+        * @notice Funcion VIEW para consultar el balance de la boveda personal
+        * @param _usuario Direccion del usuario que desea consultar el balance
+        * @return balance_ Balance del usuario
+    */
+    function consultarBalance(address _usuario) external view returns (uint256 balance_) {
+        balance_ = s_boveda[_usuario];
+    }
+
+    /**
+        * @notice Consulta información general del banco
+        * @return totalDepositado_ Total de ETH depositado en el banco
+        * @return contadorDepositos_ Número total de depósitos realizados
+        * @return contadorRetiros_ Número total de retiros realizados
+        * @return bankCap_ Límite máximo de depósitos del banco
+        * @return umbralRetiro_ Límite máximo por retiro
+    */
+    function consultarEstadoBanco() external view returns (
+        uint256 totalDepositado_,
+        uint256 contadorDepositos_,
+        uint256 contadorRetiros_,
+        uint256 bankCap_,
+        uint256 umbralRetiro_
+    ) {
+        totalDepositado_ = s_totalDepositado;
+        contadorDepositos_ = s_contadorDepositos;
+        contadorRetiros_ = s_contadorRetiros;
+        bankCap_ = i_bankCap;
+        umbralRetiro_ = i_umbralRetiro;
+    }
 }
