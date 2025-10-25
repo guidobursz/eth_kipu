@@ -409,17 +409,12 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "_token",
-						"type": "address"
-					},
-					{
 						"internalType": "uint256",
 						"name": "_amount",
 						"type": "uint256"
 					}
 				],
-				"name": "depositarToken",
+				"name": "depositarUSDC",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -512,17 +507,12 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "_token",
-						"type": "address"
-					},
-					{
 						"internalType": "uint256",
 						"name": "_amount",
 						"type": "uint256"
 					}
 				],
-				"name": "retirarToken",
+				"name": "retirarUSDC",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -785,12 +775,8 @@
 				"depositarETH()": {
 					"details": "Convierte el ETH a USD usando Chainlink y valida el límite globalEl balance se almacena en USD"
 				},
-				"depositarToken(address,uint256)": {
-					"details": "El usuario debe aprobar previamente el token al contratoSolo soporta USDC actualmente",
-					"params": {
-						"_amount": "Cantidad a depositar en unidades del token",
-						"_token": "Dirección del token a depositar"
-					}
+				"depositarUSDC(uint256)": {
+					"details": "Valida el límite globalIncrementa el balance del usuario y el total depositadoEmite el evento KipuBankV2_DepositoRealizado"
 				},
 				"owner()": {
 					"details": "Returns the address of the current owner."
@@ -804,11 +790,10 @@
 						"_amountETH": "Cantidad de ETH a retirar en wei"
 					}
 				},
-				"retirarToken(address,uint256)": {
+				"retirarUSDC(uint256)": {
 					"details": "Valida saldo suficiente y umbral de retiro en USD",
 					"params": {
-						"_amount": "Cantidad a retirar en unidades del token",
-						"_token": "Dirección del token a retirar"
+						"_amount": "Cantidad de USDC a retirar"
 					}
 				},
 				"transferOwnership(address)": {
@@ -895,8 +880,8 @@
 				"depositarETH()": {
 					"notice": "Permite depositar ETH nativo en la bóveda del usuario"
 				},
-				"depositarToken(address,uint256)": {
-					"notice": "Permite depositar tokens ERC20 en la bóveda del usuario"
+				"depositarUSDC(uint256)": {
+					"notice": "Depositar directamente USDC"
 				},
 				"i_bankCapUSD()": {
 					"notice": "Límite global del banco en USD"
@@ -910,8 +895,8 @@
 				"retirarETH(uint256)": {
 					"notice": "Permite retirar ETH nativo de la bóveda del usuario"
 				},
-				"retirarToken(address,uint256)": {
-					"notice": "Permite retirar tokens ERC20 de la bóveda del usuario"
+				"retirarUSDC(uint256)": {
+					"notice": "Permite retirar USDC de la bóveda del usuario"
 				},
 				"s_balances(address,address)": {
 					"notice": "Mapping anidado: usuario => token => balance en USD"
@@ -952,11 +937,11 @@
 	},
 	"sources": {
 		"03_kipu-bank-v2/contracts/KipuBankV2.sol": {
-			"keccak256": "0x75331bad743c2b95a159a9aa482db828c0407305dc85ecc65d9d9dc19ad952f7",
+			"keccak256": "0x50dfe0d6ce5238bc5752f1dc7f29eebc129780ff7b136f4a810e218a61c49624",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d20690f10b2ecb32395267a3fbc8529cf8dc8b3e5009769ed4d1e2534bbe93ea",
-				"dweb:/ipfs/QmYthMH571HHVmBNduQmFpzVGR6CNy9EkQaGxxmAoNYZtM"
+				"bzz-raw://7b4af5fe8e9cf58196f4d1e71fe09a6457981d0866c7b2030201e6d86baa424d",
+				"dweb:/ipfs/QmdS1ghXHLG6fEihgPzhddVrTP2QREGfrGP6CbyaVn2aq2"
 			]
 		},
 		"@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol": {

@@ -177,7 +177,6 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
     /*///////////////////////
             Constructor
     ///////////////////////*/
-    
     /**
      * @param _bankCapUSD Límite máximo total de depósitos en USD (6 decimales)
      * @param _umbralRetiroUSD Monto máximo por retiro en USD (6 decimales)
@@ -186,7 +185,6 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
      * @param _owner Dirección del propietario del contrato
      * @dev Los valores immutable se establecen aquí y no pueden cambiar después del deployment
      */
-     /*
     constructor(
             uint256 _bankCapUSD,
             uint256 _umbralRetiroUSD,
@@ -196,19 +194,20 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
         )
         Ownable(_owner)
     {
+        /*
+            Valores deploy:
+            i_bankCapUSD = 1000000000; //1000
+            _umbralRetiroUSD = 100000000; //100
+            _ethUsdFeed = 0x694AA1769357215DE4FAC081bf1f309aDC325306;
+            _usdc = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238;
+            _owner = 0x652405FdecC7fCcA771752b83D5F6DB8be46a296
+        */
         i_bankCapUSD = _bankCapUSD;
         i_umbralRetiroUSD = _umbralRetiroUSD;
         s_ethUsdFeed = AggregatorV3Interface(_ethUsdFeed);
         i_usdc = IERC20(_usdc);
     }
-    */
-    constructor(){
-        i_bankCapUSD = 1000000000; //1000
-        i_umbralRetiroUSD = 100000000; //100
-        s_ethUsdFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-        i_usdc = IERC20(0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238);
-        i_owner = msg.sender; //0x652405FdecC7fCcA771752b83D5F6DB8be46a296
-    }
+
     
     /*///////////////////////
         Modificadores
@@ -313,48 +312,6 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
         IERC20(address(i_usdc)).safeTransferFrom(msg.sender, address(this), _amount);
     }
 
-    /**
-    * @notice Permite depositar tokens ERC20 en la bóveda del usuario
-    * @param _token Dirección del token a depositar
-    * @param _amount Cantidad a depositar en unidades del token
-    * @dev El usuario debe aprobar previamente el token al contrato
-    * @dev Solo soporta USDC actualmente
-    */
-    function depositarToken(address _token, uint256 _amount) 
-        external 
-        nonReentrant 
-        tokenSoportado(_token) 
-        montoMayorACero(_amount) 
-    {
-        // Convertir a USD (para USDC es 1:1, pero normaliza decimales)
-        uint256 valorUSD = _normalizarDecimales(_token, _amount);
-        
-        // Validar límite global
-        if (s_totalDepositadoUSD + valorUSD > i_bankCapUSD) {
-            revert KipuBankV2_LimiteGlobalExcedidoUSD(
-                s_totalDepositadoUSD,
-                valorUSD,
-                i_bankCapUSD
-            );
-        }
-        
-        // Effects: Actualizar estado
-        s_balances[msg.sender][_token] += valorUSD;
-        s_totalDepositadoPorToken[_token] += valorUSD;
-        s_totalDepositadoUSD += valorUSD;
-        s_contadorDepositos++;
-        
-        // Interactions: Transferir tokens y emitir evento
-        emit KipuBankV2_DepositoRealizado(
-            msg.sender,
-            _token,
-            _amount,
-            valorUSD
-        );
-        
-        IERC20(_token).safeTransferFrom(msg.sender, address(this), _amount);
-    }
-
 
     /**
     * @notice Permite retirar ETH nativo de la bóveda del usuario
@@ -440,55 +397,6 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
         IERC20(address(i_usdc)).safeTransfer(msg.sender, _amount);
     }
 
-
-    /**
-    * @notice Permite retirar tokens ERC20 de la bóveda del usuario
-    * @param _token Dirección del token a retirar
-    * @param _amount Cantidad a retirar en unidades del token
-    * @dev Valida saldo suficiente y umbral de retiro en USD
-    */
-    function retirarToken(address _token, uint256 _amount) 
-        external 
-        nonReentrant 
-        tokenSoportado(_token) 
-        montoMayorACero(_amount) 
-    {
-        // Convertir a USD
-        uint256 valorUSD = _normalizarDecimales(_token, _amount);
-        
-        // Checks: Validar saldo suficiente
-        if (s_balances[msg.sender][_token] < valorUSD) {
-            revert KipuBankV2_SaldoInsuficiente(
-                s_balances[msg.sender][_token],
-                valorUSD
-            );
-        }
-        
-        // Checks: Validar umbral de retiro
-        if (valorUSD > i_umbralRetiroUSD) {
-            revert KipuBankV2_RetiroExcedeUmbral(valorUSD, i_umbralRetiroUSD);
-        }
-        
-        // Effects: Actualizar estado
-        s_balances[msg.sender][_token] -= valorUSD;
-        s_totalDepositadoPorToken[_token] -= valorUSD;
-        s_totalDepositadoUSD -= valorUSD;
-        s_contadorRetiros++;
-        
-        // Interactions: Emitir evento y transferir tokens
-        emit KipuBankV2_RetiroRealizado(
-            msg.sender,
-            _token,
-            _amount,
-            valorUSD
-        );
-        
-        //Transfiero de forma segura
-        IERC20(_token).safeTransfer(msg.sender, _amount);
-    }
-
-
-
     
     /*///////////////////////
         Funciones Públicas
@@ -503,7 +411,6 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
         s_ethUsdFeed = AggregatorV3Interface(_newFeed);
         emit KipuBankV2_FeedActualizado(_newFeed);
     }
-
 
 
     /*///////////////////////
@@ -522,28 +429,6 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
         valorUSD_ = (_ethAmount * precioEth) / 1e20;
     }
 
-    /**
-    * @notice Normaliza la cantidad de un token a 6 decimales (USD)
-    * @param _token Dirección del token
-    * @param _amount Cantidad en unidades del token
-    * @return valorNormalizado_ Valor normalizado a 6 decimales
-    * @dev Para USDC (6 decimales) retorna el mismo valor
-    */
-    function _normalizarDecimales(address _token, uint256 _amount) 
-        internal 
-        view 
-        returns (uint256 valorNormalizado_) 
-    {
-        // Para USDC, ya tiene 6 decimales
-        if (_token == address(i_usdc)) {
-            valorNormalizado_ = _amount;
-        } else {
-            // Para otros tokens ERC20 (extensión futura)
-            // Obtener decimales del token y convertir a 6
-            // Por ahora, solo soportamos USDC
-            revert KipuBankV2_TokenNoSoportado(_token);
-        }
-    }
 
     /**
     * @notice Obtiene el precio actual de ETH en USD desde Chainlink
