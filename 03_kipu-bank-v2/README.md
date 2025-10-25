@@ -3,7 +3,7 @@
 Sistema avanzado de bóveda multi-token con integración de oráculos Chainlink y límites dinámicos en USD.
 
 **Versión:** 2.0  
-**Autor:** [Tu Nombre]  
+**Autor:** guidobursz
 **Curso:** Ethereum Developer Pack - Módulo 3  
 
 ---
