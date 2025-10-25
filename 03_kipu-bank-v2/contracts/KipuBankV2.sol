@@ -267,8 +267,6 @@ contract KipuBankV2 is Ownable, ReentrancyGuard {
         );
     }
 
-    
-
 
     /**
     * @notice Permite depositar tokens ERC20 en la bóveda del usuario
