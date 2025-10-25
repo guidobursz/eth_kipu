@@ -1,0 +1,46 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"details": "Library for reading and writing primitive types to specific storage slots. Storage slots are often used to avoid storage conflict when dealing with upgradeable contracts. This library helps with reading and writing to such slots without the need for inline assembly. The functions in this library return Slot structs that contain a `value` member that can be used to read or write. Example usage to set ERC-1967 implementation slot: ```solidity contract ERC1967 {     // Define the slot. Alternatively, use the SlotDerivation library to derive the slot.     bytes32 internal constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;     function _getImplementation() internal view returns (address) {         return StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value;     }     function _setImplementation(address newImplementation) internal {         require(newImplementation.code.length > 0);         StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value = newImplementation;     } } ``` TIP: Consider using this library along with {SlotDerivation}.",
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"03_kipu-bank-v2/contracts/openzeppelin/StorageSlot.sol": "StorageSlot"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"03_kipu-bank-v2/contracts/openzeppelin/StorageSlot.sol": {
+			"keccak256": "0x901a401917bd9c6bf781e9e530cde116b1b63cae4fd0e0a65bcb2d64b5e99966",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6d844eb3ed47aacc7138919b83e69286eac13b5f069b60f04b9a4c671a60af2f",
+				"dweb:/ipfs/QmahbpPXaaui1fFmJYx9zk3qQR9UnH8C6GNMh2MG5fxnT4"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,1044 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_bankCapUSD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_umbralRetiroUSD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_ethUsdFeed",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_usdc",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalActualUSD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "intentoDepositoUSD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "limiteUSD",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBankV2_LimiteGlobalExcedidoUSD",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "KipuBankV2_MontoDebeSerMayorACero",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "KipuBankV2_OracleCompromised",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "montoSolicitadoUSD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "umbralMaximoUSD",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBankV2_RetiroExcedeUmbral",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "balanceDisponible",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "montoSolicitado",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBankV2_SaldoInsuficiente",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tiempoTranscurrido",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "heartbeat",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBankV2_StalePrice",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					}
+				],
+				"name": "KipuBankV2_TokenNoSoportado",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "destinatario",
+						"type": "address"
+					}
+				],
+				"name": "KipuBankV2_TransferenciaFallida",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "OwnableInvalidOwner",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "OwnableUnauthorizedAccount",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ReentrancyGuardReentrantCall",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					}
+				],
+				"name": "SafeERC20FailedOperation",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amountUSD",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBankV2_DepositoRealizado",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newFeed",
+						"type": "address"
+					}
+				],
+				"name": "KipuBankV2_FeedActualizado",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amountUSD",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBankV2_RetiroRealizado",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "NATIVE_TOKEN",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_newFeed",
+						"type": "address"
+					}
+				],
+				"name": "actualizarFeed",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_usuario",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "consultarBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "balance_",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_usuario",
+						"type": "address"
+					}
+				],
+				"name": "consultarBalanceTotalUSD",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "balanceTotalUSD_",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "consultarEstadoBanco",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalDepositadoUSD_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalETH_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalUSDC_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "contadorDepositos_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "contadorRetiros_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bankCapUSD_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "umbralRetiroUSD_",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "consultarPrecioETH",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "precioETH_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "ultimaActualizacion_",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "depositarETH",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "depositarToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getUmbralRetiro",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "i_bankCapUSD",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "i_umbralRetiroUSD",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "i_usdc",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amountETH",
+						"type": "uint256"
+					}
+				],
+				"name": "retirarETH",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "retirarToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					}
+				],
+				"name": "s_balances",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "balanceUSD",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "s_contadorDepositos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "s_contadorRetiros",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "s_ethUsdFeed",
+				"outputs": [
+					{
+						"internalType": "contract AggregatorV3Interface",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					}
+				],
+				"name": "s_totalDepositadoPorToken",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalUSD",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "s_totalDepositadoUSD",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "guidobursz Memoria: bankCap USD: 1000 (1000000000) umbralRetiro USD: 100 (100000000) oraculo: 0x694AA1769357215DE4FAC081bf1f309aDC325306 usdc: 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238 owner: 0x652405FdecC7fCcA771752b83D5F6DB8be46a296 CONTRATO: 0x12b3DAadBFb0d0d6EdaC704bCeD03a9AefA71F83*",
+			"errors": {
+				"KipuBankV2_LimiteGlobalExcedidoUSD(uint256,uint256,uint256)": [
+					{
+						"params": {
+							"intentoDepositoUSD": "Monto que se intenta depositar",
+							"limiteUSD": "Límite máximo permitido (bankCap)",
+							"totalActualUSD": "Total actualmente depositado en el banco"
+						}
+					}
+				],
+				"KipuBankV2_RetiroExcedeUmbral(uint256,uint256)": [
+					{
+						"params": {
+							"montoSolicitadoUSD": "Monto que intenta retirar en USD",
+							"umbralMaximoUSD": "Límite máximo por retiro en USD"
+						}
+					}
+				],
+				"KipuBankV2_SaldoInsuficiente(uint256,uint256)": [
+					{
+						"params": {
+							"balanceDisponible": "Balance actual del usuario en USD",
+							"montoSolicitado": "Monto que intenta retirar en USD"
+						}
+					}
+				],
+				"KipuBankV2_StalePrice(uint256,uint256)": [
+					{
+						"params": {
+							"heartbeat": "Tiempo máximo permitido",
+							"tiempoTranscurrido": "Tiempo desde la última actualización"
+						}
+					}
+				],
+				"KipuBankV2_TokenNoSoportado(address)": [
+					{
+						"params": {
+							"token": "Dirección del token no soportado"
+						}
+					}
+				],
+				"KipuBankV2_TransferenciaFallida(address)": [
+					{
+						"params": {
+							"destinatario": "Dirección a la que se intentó enviar"
+						}
+					}
+				],
+				"OwnableInvalidOwner(address)": [
+					{
+						"details": "The owner is not a valid owner account. (eg. `address(0)`)"
+					}
+				],
+				"OwnableUnauthorizedAccount(address)": [
+					{
+						"details": "The caller account is not authorized to perform an operation."
+					}
+				],
+				"ReentrancyGuardReentrantCall()": [
+					{
+						"details": "Unauthorized reentrant call."
+					}
+				],
+				"SafeERC20FailedOperation(address)": [
+					{
+						"details": "An operation with an ERC-20 token failed."
+					}
+				]
+			},
+			"events": {
+				"KipuBankV2_DepositoRealizado(address,address,uint256,uint256)": {
+					"params": {
+						"amount": "Cantidad depositada en unidades del token",
+						"amountUSD": "Valor del depósito en USD",
+						"token": "Dirección del token depositado (address(0) para ETH)",
+						"usuario": "Dirección del usuario que depositó"
+					}
+				},
+				"KipuBankV2_FeedActualizado(address)": {
+					"params": {
+						"newFeed": "Nueva dirección del feed ETH/USD"
+					}
+				},
+				"KipuBankV2_RetiroRealizado(address,address,uint256,uint256)": {
+					"params": {
+						"amount": "Cantidad retirada en unidades del token",
+						"amountUSD": "Valor del retiro en USD (6 decimales)",
+						"token": "Dirección del token retirado (address(0) para ETH)",
+						"usuario": "Dirección del usuario que retiró"
+					}
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"actualizarFeed(address)": {
+					"details": "Solo el propietario puede llamar esta función",
+					"params": {
+						"_newFeed": "Nueva dirección del feed ETH/USD"
+					}
+				},
+				"constructor": {
+					"details": "Los valores immutable se establecen aquí y no pueden cambiar después del deployment",
+					"params": {
+						"_bankCapUSD": "Límite máximo total de depósitos en USD (6 decimales)",
+						"_ethUsdFeed": "Dirección del Chainlink Price Feed ETH/USD",
+						"_owner": "Dirección del propietario del contrato",
+						"_umbralRetiroUSD": "Monto máximo por retiro en USD (6 decimales)",
+						"_usdc": "Dirección del token USDC"
+					}
+				},
+				"consultarBalance(address,address)": {
+					"params": {
+						"_token": "Dirección del token (address(0) para ETH)",
+						"_usuario": "Dirección del usuario a consultar"
+					},
+					"returns": {
+						"balance_": "Balance del usuario en USD (6 decimales)"
+					}
+				},
+				"consultarBalanceTotalUSD(address)": {
+					"params": {
+						"_usuario": "Dirección del usuario a consultar"
+					},
+					"returns": {
+						"balanceTotalUSD_": "Balance total en USD (6 decimales)"
+					}
+				},
+				"consultarEstadoBanco()": {
+					"returns": {
+						"bankCapUSD_": "Límite máximo del banco en USD",
+						"contadorDepositos_": "Número total de depósitos realizados",
+						"contadorRetiros_": "Número total de retiros realizados",
+						"totalDepositadoUSD_": "Total depositado en el banco en USD",
+						"totalETH_": "Total de ETH depositado en USD",
+						"totalUSDC_": "Total de USDC depositado en USD",
+						"umbralRetiroUSD_": "Límite máximo por retiro en USD"
+					}
+				},
+				"consultarPrecioETH()": {
+					"returns": {
+						"precioETH_": "Precio actual de ETH en USD (8 decimales)",
+						"ultimaActualizacion_": "Timestamp de la última actualización"
+					}
+				},
+				"depositarETH()": {
+					"details": "Convierte el ETH a USD usando Chainlink y valida el límite globalEl balance se almacena en USD"
+				},
+				"depositarToken(address,uint256)": {
+					"details": "El usuario debe aprobar previamente el token al contratoSolo soporta USDC actualmente",
+					"params": {
+						"_amount": "Cantidad a depositar en unidades del token",
+						"_token": "Dirección del token a depositar"
+					}
+				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+				},
+				"retirarETH(uint256)": {
+					"details": "Valida saldo suficiente y umbral de retiro en USD",
+					"params": {
+						"_amountETH": "Cantidad de ETH a retirar en wei"
+					}
+				},
+				"retirarToken(address,uint256)": {
+					"details": "Valida saldo suficiente y umbral de retiro en USD",
+					"params": {
+						"_amount": "Cantidad a retirar en unidades del token",
+						"_token": "Dirección del token a retirar"
+					}
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				}
+			},
+			"title": "KipuBankV2",
+			"version": 1
+		},
+		"userdoc": {
+			"errors": {
+				"KipuBankV2_LimiteGlobalExcedidoUSD(uint256,uint256,uint256)": [
+					{
+						"notice": "Error emitido cuando el depósito excede el límite global en USD"
+					}
+				],
+				"KipuBankV2_MontoDebeSerMayorACero()": [
+					{
+						"notice": "Error emitido cuando el monto es cero"
+					}
+				],
+				"KipuBankV2_OracleCompromised()": [
+					{
+						"notice": "Error emitido cuando el oráculo retorna un precio inválido"
+					}
+				],
+				"KipuBankV2_RetiroExcedeUmbral(uint256,uint256)": [
+					{
+						"notice": "Error emitido cuando el retiro excede el umbral permitido por transacción"
+					}
+				],
+				"KipuBankV2_SaldoInsuficiente(uint256,uint256)": [
+					{
+						"notice": "Error emitido cuando el usuario intenta retirar más de lo que tiene"
+					}
+				],
+				"KipuBankV2_StalePrice(uint256,uint256)": [
+					{
+						"notice": "Error emitido cuando el precio del oráculo está desactualizado"
+					}
+				],
+				"KipuBankV2_TokenNoSoportado(address)": [
+					{
+						"notice": "Error emitido cuando el token no es soportado"
+					}
+				],
+				"KipuBankV2_TransferenciaFallida(address)": [
+					{
+						"notice": "Error emitido cuando falla la transferencia de ETH"
+					}
+				]
+			},
+			"events": {
+				"KipuBankV2_DepositoRealizado(address,address,uint256,uint256)": {
+					"notice": "Evento emitido cuando un usuario realiza un depósito exitoso"
+				},
+				"KipuBankV2_FeedActualizado(address)": {
+					"notice": "Evento emitido cuando el owner actualiza el feed de Chainlink"
+				},
+				"KipuBankV2_RetiroRealizado(address,address,uint256,uint256)": {
+					"notice": "Evento emitido cuando un usuario realiza un retiro exitoso"
+				}
+			},
+			"kind": "user",
+			"methods": {
+				"NATIVE_TOKEN()": {
+					"notice": "declaro eth nativo"
+				},
+				"actualizarFeed(address)": {
+					"notice": "Permite al dueno del contrato actualizar la dirección del Chainlink Price Feed"
+				},
+				"consultarBalance(address,address)": {
+					"notice": "Consulta el balance de un usuario para un token específico"
+				},
+				"consultarBalanceTotalUSD(address)": {
+					"notice": "Consulta el balance total de un usuario en USD (todos los tokens)"
+				},
+				"consultarEstadoBanco()": {
+					"notice": "Consulta información general del estado del banco"
+				},
+				"consultarPrecioETH()": {
+					"notice": "Consulta el precio actual de ETH en USD desde Chainlink"
+				},
+				"depositarETH()": {
+					"notice": "Permite depositar ETH nativo en la bóveda del usuario"
+				},
+				"depositarToken(address,uint256)": {
+					"notice": "Permite depositar tokens ERC20 en la bóveda del usuario"
+				},
+				"i_bankCapUSD()": {
+					"notice": "Límite global del banco en USD"
+				},
+				"i_umbralRetiroUSD()": {
+					"notice": "Umbral máximo de retiro por transacción en USD"
+				},
+				"i_usdc()": {
+					"notice": "Dirección del token USDC"
+				},
+				"retirarETH(uint256)": {
+					"notice": "Permite retirar ETH nativo de la bóveda del usuario"
+				},
+				"retirarToken(address,uint256)": {
+					"notice": "Permite retirar tokens ERC20 de la bóveda del usuario"
+				},
+				"s_balances(address,address)": {
+					"notice": "Mapping anidado: usuario => token => balance en USD"
+				},
+				"s_contadorDepositos()": {
+					"notice": "Contador global de depósitos realizados"
+				},
+				"s_contadorRetiros()": {
+					"notice": "Contador global de retiros realizados"
+				},
+				"s_ethUsdFeed()": {
+					"notice": "Oracle de Chainlink para obtener precio ETH/USD"
+				},
+				"s_totalDepositadoPorToken(address)": {
+					"notice": "Total depositado por token en USD"
+				},
+				"s_totalDepositadoUSD()": {
+					"notice": "Total depositado global en USD (suma de todos los tokens)"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"03_kipu-bank-v2/contracts/KipuBankV2.sol": "KipuBankV2"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"03_kipu-bank-v2/contracts/KipuBankV2.sol": {
+			"keccak256": "0x75331bad743c2b95a159a9aa482db828c0407305dc85ecc65d9d9dc19ad952f7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d20690f10b2ecb32395267a3fbc8529cf8dc8b3e5009769ed4d1e2534bbe93ea",
+				"dweb:/ipfs/QmYthMH571HHVmBNduQmFpzVGR6CNy9EkQaGxxmAoNYZtM"
+			]
+		},
+		"@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol": {
+			"keccak256": "0x257a8d28fa83d3d942547c8e129ef465e4b5f3f31171e7be4739a4c98da6b4f0",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6d39e11b1dc7b9b8ccdabbc9be442ab7cda4a81c748f57e316dcb1bcb4a28bf9",
+				"dweb:/ipfs/QmaG6vz6W6iEUBsbHSBob5mdcitYxWjoygxREHpsJHfWrS"
+			]
+		},
+		"@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6",
+				"dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a"
+			]
+		},
+		"@openzeppelin/contracts/interfaces/IERC1363.sol": {
+			"keccak256": "0xd5ea07362ab630a6a3dee4285a74cf2377044ca2e4be472755ad64d7c5d4b69d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://da5e832b40fc5c3145d3781e2e5fa60ac2052c9d08af7e300dc8ab80c4343100",
+				"dweb:/ipfs/QmTzf7N5ZUdh5raqtzbM11yexiUoLC9z3Ws632MCuycq1d"
+			]
+		},
+		"@openzeppelin/contracts/interfaces/IERC165.sol": {
+			"keccak256": "0x0afcb7e740d1537b252cb2676f600465ce6938398569f09ba1b9ca240dde2dfc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1c299900ac4ec268d4570ecef0d697a3013cd11a6eb74e295ee3fbc945056037",
+				"dweb:/ipfs/Qmab9owJoxcA7vJT5XNayCMaUR1qxqj1NDzzisduwaJMcZ"
+			]
+		},
+		"@openzeppelin/contracts/interfaces/IERC20.sol": {
+			"keccak256": "0x1a6221315ce0307746c2c4827c125d821ee796c74a676787762f4778671d4f44",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1bb2332a7ee26dd0b0de9b7fe266749f54820c99ab6a3bcb6f7e6b751d47ee2d",
+				"dweb:/ipfs/QmcRWpaBeCYkhy68PR3B4AgD7asuQk7PwkWxrvJbZcikLF"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x74ed01eb66b923d0d0cfe3be84604ac04b76482a55f9dd655e1ef4d367f95bc2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5282825a626cfe924e504274b864a652b0023591fa66f06a067b25b51ba9b303",
+				"dweb:/ipfs/QmeCfPykghhMc81VJTrHTC7sF6CRvaA1FXVq2pJhwYp1dV"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
+			"keccak256": "0x982c5cb790ab941d1e04f807120a71709d4c313ba0bfc16006447ffbd27fbbd5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8150ceb4ac947e8a442b2a9c017e01e880b2be2dd958f1fa9bc405f4c5a86508",
+				"dweb:/ipfs/QmbcBmFX66AY6Kbhnd5gx7zpkgqnUafo43XnmayAM7zVdB"
+			]
+		},
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+				"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+			]
+		},
+		"@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+			"keccak256": "0x11a5a79827df29e915a12740caf62fe21ebe27c08c9ae3e09abe9ee3ba3866d3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3cf0c69ab827e3251db9ee6a50647d62c90ba580a4d7bbff21f2bea39e7b2f4a",
+				"dweb:/ipfs/QmZiKwtKU1SBX4RGfQtY7PZfiapbbu6SZ9vizGQD9UHjRA"
+			]
+		},
+		"@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+			"keccak256": "0x8891738ffe910f0cf2da09566928589bf5d63f4524dd734fd9cedbac3274dd5c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://971f954442df5c2ef5b5ebf1eb245d7105d9fbacc7386ee5c796df1d45b21617",
+				"dweb:/ipfs/QmadRjHbkicwqwwh61raUEapaVEtaLMcYbQZWs9gUkgj3u"
+			]
+		}
+	},
+	"version": 1
+}

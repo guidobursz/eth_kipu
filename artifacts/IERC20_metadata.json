@@ -1,0 +1,257 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "Approval",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "Transfer",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					}
+				],
+				"name": "allowance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "approve",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "balanceOf",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalSupply",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "transfer",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFrom",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Interfaz del estándar ERC-20 según lo definido en el ERC.",
+			"events": {
+				"Approval(address,address,uint256)": {
+					"details": "Emitido cuando el permiso de un `spender` para un `owner` es establecido mediante una llamada a {approve}. `value` es el nuevo permiso."
+				},
+				"Transfer(address,address,uint256)": {
+					"details": "Emitido cuando `value` tokens son movidos de una cuenta (`from`) a otra (`to`). Nota que `value` puede ser cero."
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"allowance(address,address)": {
+					"details": "Devuelve el número restante de tokens que `spender` podrá gastar en nombre de `owner` mediante {transferFrom}. Por defecto es cero. Este valor cambia cuando se llaman {approve} o {transferFrom}."
+				},
+				"approve(address,uint256)": {
+					"details": "Establece una cantidad de tokens `value` como permiso de `spender` sobre los tokens del llamador. Devuelve un valor booleano indicando si la operación fue exitosa. IMPORTANTE: Tenga cuidado que cambiar un permiso con este método conlleva el riesgo de que alguien pueda usar tanto el permiso antiguo como el nuevo debido a un orden desafortunado de transacciones. Una posible solución para mitigar esta condición de carrera es primero reducir el permiso del gastador a 0 y luego establecer el valor deseado: <https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729> Emite un evento {Approval}."
+				},
+				"balanceOf(address)": {
+					"details": "Devuelve el valor de tokens que posee la `account`."
+				},
+				"totalSupply()": {
+					"details": "Devuelve el valor total de tokens en existencia."
+				},
+				"transfer(address,uint256)": {
+					"details": "Mueve una cantidad de tokens `value` desde la cuenta del llamador a `to`. Devuelve un valor booleano indicando si la operación fue exitosa. Emite un evento {Transfer}."
+				},
+				"transferFrom(address,address,uint256)": {
+					"details": "Mueve una cantidad de tokens `value` desde `from` hacia `to` usando el mecanismo de permisos. `value` se deduce del permiso del llamador. Devuelve un valor booleano indicando si la operación fue exitosa. Emite un evento {Transfer}."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"03_kipu-bank-v2/contracts/IERC20.sol": "IERC20"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"03_kipu-bank-v2/contracts/IERC20.sol": {
+			"keccak256": "0x14f233805b88bd51d7655e43c3983a8a260eb5e69ce9227493128ddbf3e2a8b5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c7be30ea78f3f8a21ae057088fead70fe165bdee314f86a1d3917b23384230f9",
+				"dweb:/ipfs/QmW4bBu6RuXv9ys1CXEihsbxeRzfcpiqJ3rfVRRNHaT92D"
+			]
+		}
+	},
+	"version": 1
+}
