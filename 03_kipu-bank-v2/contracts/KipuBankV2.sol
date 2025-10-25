@@ -22,15 +22,6 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interf
 /**
  * @title KipuBankV2
  * @author guidobursz
- Memoria:
- bankCap USD: 1000 (1000000000)
- umbralRetiro USD: 100 (100000000)
- oraculo: 0x694AA1769357215DE4FAC081bf1f309aDC325306
- usdc: 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
- owner: 0x652405FdecC7fCcA771752b83D5F6DB8be46a296
-
-
-    CONTRATO: 0x12b3DAadBFb0d0d6EdaC704bCeD03a9AefA71F83
 **/
 
 contract KipuBankV2 is Ownable, ReentrancyGuard {
