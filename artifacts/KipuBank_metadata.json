@@ -1,0 +1,481 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_bankCap",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_umbralRetiro",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "depositoActual",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "intentoDeposito",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "limiteMaximo",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBank_LimiteGlobalExcedido",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "KipuBank_MontoDebeSerMayorACero",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "montoSolicitado",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "umbralMaximo",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBank_RetiroExcedeUmbral",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "balanceDisponible",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "montoSolicitado",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBank_SaldoInsuficiente",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "destinatario",
+						"type": "address"
+					}
+				],
+				"name": "KipuBank_TransferenciaFallida",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "monto",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBank_DepositoRealizado",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "monto",
+						"type": "uint256"
+					}
+				],
+				"name": "KipuBank_RetiroRealizado",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_usuario",
+						"type": "address"
+					}
+				],
+				"name": "consultarBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "balance_",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "consultarEstadoBanco",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalDepositado_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "contadorDepositos_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "contadorRetiros_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bankCap_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "umbralRetiro_",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "depositar",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "i_bankCap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "i_umbralRetiro",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_monto",
+						"type": "uint256"
+					}
+				],
+				"name": "retirar",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "usuario",
+						"type": "address"
+					}
+				],
+				"name": "s_boveda",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "s_contadorDepositos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "s_contadorRetiros",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "s_totalDepositado",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "guidobursz",
+			"custom:security": "Este es un contrato educativo - Módulo 2 EDP",
+			"details": "Este contrato implementa límites de retiro y cap global de depósitos",
+			"errors": {
+				"KipuBank_LimiteGlobalExcedido(uint256,uint256,uint256)": [
+					{
+						"params": {
+							"depositoActual": "Total actualmente depositado en el banco",
+							"intentoDeposito": "Monto que se intenta depositar",
+							"limiteMaximo": "Limite maximo permitido (bankCap)"
+						}
+					}
+				],
+				"KipuBank_RetiroExcedeUmbral(uint256,uint256)": [
+					{
+						"params": {
+							"montoSolicitado": "Monto que intenta retirar",
+							"umbralMaximo": "Limite maximo por retiro"
+						}
+					}
+				],
+				"KipuBank_SaldoInsuficiente(uint256,uint256)": [
+					{
+						"params": {
+							"balanceDisponible": "Balance actual del usuario",
+							"montoSolicitado": "Monto que intenta retirar"
+						}
+					}
+				],
+				"KipuBank_TransferenciaFallida(address)": [
+					{
+						"params": {
+							"destinatario": "Direccion a la que se intento enviar"
+						}
+					}
+				]
+			},
+			"events": {
+				"KipuBank_DepositoRealizado(address,uint256)": {
+					"params": {
+						"monto": "Cantidad de ETH depositada",
+						"usuario": "Direccion del usuario que deposito"
+					}
+				},
+				"KipuBank_RetiroRealizado(address,uint256)": {
+					"params": {
+						"monto": "Cantidad de ETH retirada",
+						"usuario": "Direccion del usuario que retiro"
+					}
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"constructor": {
+					"details": "Los valores se establecen como immutable y no pueden cambiar despues del deployment",
+					"params": {
+						"_bankCap": "Limite maximo total de depositos permitidos en el banco",
+						"_umbralRetiro": "Monto maximo que se puede retirar por transaccion"
+					}
+				},
+				"consultarBalance(address)": {
+					"params": {
+						"_usuario": "Direccion del usuario que desea consultar el balance"
+					},
+					"returns": {
+						"balance_": "Balance del usuario"
+					}
+				},
+				"consultarEstadoBanco()": {
+					"returns": {
+						"bankCap_": "Límite máximo de depósitos del banco",
+						"contadorDepositos_": "Número total de depósitos realizados",
+						"contadorRetiros_": "Número total de retiros realizados",
+						"totalDepositado_": "Total de ETH depositado en el banco",
+						"umbralRetiro_": "Límite máximo por retiro"
+					}
+				},
+				"depositar()": {
+					"details": "Antes de procesar el deposito valido el monto y el limite globalincremento el balance del usuario, el total depositado y el contador de depositosEmite el evento KipuBank_DepositoRealizado si hay deposito exitoso"
+				},
+				"retirar(uint256)": {
+					"details": "Valida que el monto sea mayor a cero, que el usuario tenga saldo suficientey que no exceda el umbral de retiro por transacciónSigue el patrón checks-effects-interactions para prevenir reentrancyEmite el evento KipuBank_RetiroRealizado tras un retiro exitoso",
+					"params": {
+						"_monto": "Cantidad de ETH que el usuario desea retirar"
+					}
+				}
+			},
+			"title": "Contrato KipuBank",
+			"version": 1
+		},
+		"userdoc": {
+			"errors": {
+				"KipuBank_LimiteGlobalExcedido(uint256,uint256,uint256)": [
+					{
+						"notice": "Error emitido cuando el deposito excede el límite global del banco"
+					}
+				],
+				"KipuBank_MontoDebeSerMayorACero()": [
+					{
+						"notice": "Error emitido cuando el monto del deposito es cero"
+					}
+				],
+				"KipuBank_RetiroExcedeUmbral(uint256,uint256)": [
+					{
+						"notice": "Error emitido cuando el retiro excede el umbral permitido por transaccion"
+					}
+				],
+				"KipuBank_SaldoInsuficiente(uint256,uint256)": [
+					{
+						"notice": "Error emitido cuando el usuario intenta retirar mas de lo que tiene"
+					}
+				],
+				"KipuBank_TransferenciaFallida(address)": [
+					{
+						"notice": "Error emitido cuando falla la transferencia de ETH"
+					}
+				]
+			},
+			"events": {
+				"KipuBank_DepositoRealizado(address,uint256)": {
+					"notice": "Evento emitido cuando un usuario realiza un depósito exitoso"
+				},
+				"KipuBank_RetiroRealizado(address,uint256)": {
+					"notice": "Evento emitido cuando un usuario realiza un retiro exitoso"
+				}
+			},
+			"kind": "user",
+			"methods": {
+				"constructor": {
+					"notice": "Inicializa el contrato KipuBank con los parámetros de configuración"
+				},
+				"consultarBalance(address)": {
+					"notice": "Funcion VIEW para consultar el balance de la boveda personal"
+				},
+				"consultarEstadoBanco()": {
+					"notice": "Consulta información general del banco"
+				},
+				"depositar()": {
+					"notice": "Funcion para depositar eth en la boveda personal"
+				},
+				"i_bankCap()": {
+					"notice": "Límite global de depósitos del banco"
+				},
+				"i_umbralRetiro()": {
+					"notice": "Umbral máximo de retiro por transacción (0.1 ETH)"
+				},
+				"retirar(uint256)": {
+					"notice": "Permite a los usuarios retirar ETH de su bóveda personal"
+				},
+				"s_boveda(address)": {
+					"notice": "Mapping que almacena el balance de cada usuario"
+				},
+				"s_contadorDepositos()": {
+					"notice": "Contador global de depositos realizados"
+				},
+				"s_contadorRetiros()": {
+					"notice": "Contador global de retiros realizados"
+				},
+				"s_totalDepositado()": {
+					"notice": "Total de ETH depositado en el banco"
+				}
+			},
+			"notice": "Sistema de bóveda personal para depósitos y retiros de ETH",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"02_kipu-bank/contracts/KipuBank.sol": "KipuBank"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"02_kipu-bank/contracts/KipuBank.sol": {
+			"keccak256": "0x77bff76c142e77596d0e9a117e0c3111ad7a5dfff634a5f81c0c72d8b052ce69",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4155a01053e78577fc4fcc69a6497ab25948f6bae002b620349cd911cb942deb",
+				"dweb:/ipfs/QmVajeNreDx9maYygXXkhQrhBQxqXVK8wiQevfdXWMtTZZ"
+			]
+		}
+	},
+	"version": 1
+}
